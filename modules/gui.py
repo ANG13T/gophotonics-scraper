@@ -49,9 +49,14 @@ def print_styled_items_with_keyword_highlights(items, keyword):
                 console.print(f"[magenta bold]{key.upper()}[/magenta bold] {highlighted_value}")
 
 def print_styled_component(component):
-    for key, value in component['product_details'].items():
-        console.print(f"[magenta bold]{key.upper()}:[/magenta bold] {value}")
-    for key, value in component['general_parameters'].items():
-        console.print(f"[magenta bold]{key.upper()}:[/magenta bold] {value}")
-    console.print(f"[magenta bold]{'Manufacturer Website Link'.upper()}:[/magenta bold] {component.get('manufacturer_website_link', 'N/A')}")
-    console.print(f"[magenta bold]URL:[/magenta bold] {component['url']}")
+    print("\n")
+    for key, value in component.items():
+        if key == 'specs':
+            for spec in value:
+                console.print(f"\n[steel_blue bold][ {spec['title'].upper()} ]\n [/steel_blue bold]")
+                for item in spec['items']:
+                    console.print(f"   [magenta bold]{item['field'].upper()}:[/magenta bold] {item['value']}")
+            continue
+
+        if key != 'details':
+            console.print(f"[magenta bold]{key.upper()}:[/magenta bold] {value}")

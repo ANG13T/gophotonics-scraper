@@ -73,7 +73,7 @@ def scan_component():
     component = select_component(input, data)
     component_url = component["link"]
     component_data = scrape_item(component_url)
-    print_styled_component(component_data[0])
+    print_styled_component(component_data)
 
 def view_subsystems():
     console.print("[bold green]Viewing subsystems...[/bold green]")
@@ -102,7 +102,7 @@ while True:
     
     print_banner()
     console.print(menu_panel)
-    choice = console.input("[bright_black]Please select an option (1-5): [/bright_black]")
+    choice = console.input("[cyan]Please select an option (1-5): [/cyan]")
 
     if choice == "1":
         scan_subsystem_items()
