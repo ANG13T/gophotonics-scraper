@@ -1,4 +1,4 @@
-# SATNOW SCRAPER 🛸
+# GO PHOTONICS SCRAPER 
 
 Check if there are product listings... if not, just show organization information
 Scraper component detects if there are products...
@@ -13,8 +13,8 @@ All data is scraped from [SatNow](https://www.satnow.com/)
 ![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png)
 
 ### 0x00 > Features
-- Extracts details about satellite component specifications
-- Extracts details about subsystem components
+- Extracts details about photonics component specifications
+- Extracts details about manufacturers
 - Displays the data in a tabular format via TUI
 - Data download support for `JSON`, `TXT`, and `CSV` formats
 
@@ -43,3 +43,6 @@ SatNow Scraper is open to any contributions. Please fork the repository and make
 If you enjoyed SatNow Scraper, please consider becoming a sponsor in order to fund my future projects.
 
 To check out my other works, visit my [GitHub profile](github.com/ANG13T).
+
+### TODO
+- finish 

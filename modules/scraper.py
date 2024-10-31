@@ -8,7 +8,7 @@ def get_total_pages(url):
         soup = BeautifulSoup(response.content, 'html.parser')
 
         # Find pagination element and extract all page numbers
-        pagination = soup.select_one('ul#pagingDiv')
+        pagination = soup.select_one('div#pagingDiv')
         if pagination:
             page_links = pagination.select('li.page-item > a.page-link')
 
@@ -52,8 +52,8 @@ def scrape_page(url):
 
         items = []
 
-        # Find all elements with the 'col-xl-8 col-lg-8 col-md-7 col-sm-8 centerLeft' class
-        for item in soup.find_all(class_='col-xl-8 col-lg-8 col-md-7 col-sm-8 centerLeft'):
+        # Find all elements with the 'col-sm-8 col-md-7 col-lg-8 centerLeft centerLeft' class
+        for item in soup.find_all(class_='col-sm-8 col-md-7 col-lg-8 centerLeft'):
             item_data = {}
 
             # TITLE: h3.prod-title > a (get the text inside the title link)
@@ -94,58 +94,43 @@ def scrape_page(url):
         print(f"Error fetching {url}: {e}")
         return []
 
+
 def scrape_item(url):
     try:
+        item_data = {}
         response = requests.get(url)
         soup = BeautifulSoup(response.content, 'html.parser')
+        item_title = soup.select_one('#ContentPlaceHolder1_lblProductName').get_text(strip=True)
+        item_type = soup.select_one('#ContentPlaceHolder1_lblNodeSingularName').get_text(strip=True)
+        item_manufacturer = soup.select_one('a#hlnkManuDisplayName').get_text(strip=True)
+        item_manufacturer_url = soup.select_one('a#hlnkManuDisplayName')['href']
+        item_description = soup.select_one('#ContentPlaceHolder1_lblPartCkEditor').get_text(strip=True)
+        item_data['title'] = item_title
+        item_data['type'] = item_type
+        item_data['manufacturer'] = item_manufacturer
+        item_data['manufacturer_url'] = item_manufacturer_url
+        item_data['description'] = item_description
+        item_data['specs'] = []
+        product_specs = soup.select('.specs > #ContentPlaceHolder1_lblValues')
 
-        items = []
-
-        # Find all elements with the 'specs' class
-        for item in soup.select('.specs'):
-            item_data = {}
-            product_details = {}
-            general_parameters = {}
-
-            product_details_section = item.select_one('.spec-container:nth-of-type(1) .spec-values ul')
-            if product_details_section:
-                for detail in product_details_section.find_all('li'):
-                    field = detail.select_one('.field')
-                    value = detail.select_one('.value')
-                    if field and value:
-                        product_details[field.get_text(strip=True)] = value.get_text(strip=True)
-
-            general_parameters_section = item.select_one('.spec-container:nth-of-type(2) .spec-values ul')
-            if general_parameters_section:
-                for param in general_parameters_section.find_all('li'):
-                    field = param.select_one('.field')
-                    value = param.select_one('.value')
-                    if field and value:
-                        general_parameters[field.get_text(strip=True)] = value.get_text(strip=True)
-
-            technical_document_datasheet = None
-            technical_docs_section = item.select_one('.spec-container.ds-action-container .spec-values ul')
-            if technical_docs_section:
-                datasheet_link = technical_docs_section.select_one('a')
-                if datasheet_link and 'href' in datasheet_link.attrs:
-                    technical_document_datasheet = datasheet_link['href']
-
-            manufacturer_website_link = None
-            manufacturer_link_section = item.select_one(".manuwebsitelink-similar")
-            if manufacturer_link_section:
-                manufacturer_link = manufacturer_link_section.select_one('a')  # Adjust selector if necessary
-                if manufacturer_link and 'href' in manufacturer_link.attrs:
-                    manufacturer_website_link = manufacturer_link['href']
-
-            # Compile data into item_data dictionary
-            item_data['product_details'] = product_details
-            item_data['general_parameters'] = general_parameters
-            item_data['technical_document_datasheet'] = technical_document_datasheet
-            item_data['manufacturer_website_link'] = manufacturer_website_link  # Add the manufacturer website link
-            item_data['url'] = url
-            items.append(item_data)
-
-        return items
+        for spec in product_specs:
+            container = spec.select('.spec-container')
+            for items in container:
+                category_data = {}
+                category_title = items.select_one('.spec-heading > h3').get_text(strip=True)
+                specs = items.select('.spec-values > ul > li')
+                category_data['title'] = category_title
+                category_data['items'] = []
+                if category_title != 'Technical Documents':
+                    for item in specs:
+                        category_field = {}
+                        field = item.select_one('.field').get_text(strip=True)
+                        value = item.select_one('.value').get_text(strip=True)
+                        category_field['field'] = field
+                        category_field['value'] = value
+                        category_data['items'].append(category_field)
+                    item_data['specs'].append(category_data)
+        return item_data
 
     except requests.RequestException as e:
         print(f"Error fetching {url}: {e}")

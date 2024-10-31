@@ -1,8 +1,8 @@
 """
  Go Photonics Web Scraper Utility
- OSINT web scraper for SatNow to extract detailed satellite component and subsystem specs for in-depth reconnaissance.
+ Quick access to photonics and lab equipment data for researchers
 
- USAGE: python3 satnowscraper.py
+ USAGE: python3 gophotonicsscraper.py
 
  Written by G4LXY @ 10/25/2024 [19:13:58 PT / 02:14:35 TAI] - Earth (Sol III)
  G4LXY 🙮 M4R$
@@ -31,7 +31,7 @@ def print_banner():
     try:
         with open("banner.txt", "r") as file:
             banner_content = file.read()
-            console.print(f"[royal_blue1]{banner_content}[/royal_blue1]")
+            console.print(f"[red]{banner_content}[/red]")
     except FileNotFoundError:
         console.print("[bold red]Banner file not found![/bold red]")
 
@@ -55,14 +55,14 @@ def scan_subsystem_items():
     result = scrape_site_with_pagination(url)
     data = json.loads(json.dumps(result))
     print_styled_items(data["items"])
-    val = console.input("[cyan]Press Enter to Continue or (S to Search Keyword)...[/cyan]")
+    val = console.input("[bright_black]Press Enter to Continue or (S to Search Keyword)...[/bright_black]")
 
     while val == "S" or val == "s":
         keys = gather_all_keys(data["items"])
-        search_key = console.input("[cyan]Enter Keyword to Search: [/cyan]")
+        search_key = console.input("[bright_black]Enter Keyword to Search: [/bright_black]")
         search_result = search_keyword(data["items"], search_key)
         print_styled_items_with_keyword_highlights(search_result, search_key)
-        val = console.input("[cyan]Press Enter to Continue or (S to Search Keyword)...[/cyan]")
+        val = console.input("[bright_black]Press Enter to Continue or (S to Search Keyword)...[/bright_black]")
 
 def scan_component():
     input = select_subsystem()
@@ -80,11 +80,11 @@ def view_subsystems():
     display_subsystems()
 
 def download_item_specific_page():
-    item_name = console.input("[cyan]Enter the item name to download: [/cyan]")
+    item_name = console.input("[bright_black]Enter the item name to download: [/bright_black]")
     console.print(f"[bold green]Downloading item page for: {item_name}...[/bold green]")
 
 def get_info_about_item():
-    item_name = console.input("[cyan]Enter the item name for info: [/cyan]")
+    item_name = console.input("[bright_black]Enter the item name for info: [/bright_black]")
     console.print(f"[bold green]Fetching info about: {item_name}...[/bold green]")
 
 def exit_program():
@@ -92,17 +92,17 @@ def exit_program():
     exit()
 
 while True:
-    menu_lines = "\n".join([f"[cyan]{item[0]}[/cyan] [bold]{item[1]}[/bold]" for item in menu_items])
+    menu_lines = "\n".join([f"[bright_black]{item[0]}[/bright_black] [bold]{item[1]}[/bold]" for item in menu_items])
 
     menu_panel = Panel(
         f"{menu_lines}",
-        border_style="bright_magenta",
+        border_style="bright_black",
         expand=False,
     )
     
     print_banner()
     console.print(menu_panel)
-    choice = console.input("[cyan]Please select an option (1-5): [/cyan]")
+    choice = console.input("[bright_black]Please select an option (1-5): [/bright_black]")
 
     if choice == "1":
         scan_subsystem_items()
@@ -117,4 +117,4 @@ while True:
     else:
         console.print("[bold red]Invalid option. Please choose a number between 1 and 5.[/bold red]")
 
-    console.input("[cyan]Press Enter to continue...[/cyan]")
+    console.input("[bright_black]Press Enter to continue...[/bright_black]")
