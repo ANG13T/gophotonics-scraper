@@ -1,5 +1,32 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
+
+def check_page_only_manufacturer(url):
+    "Returns True if page only contains Manufacturer information"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    res = soup.select_one('#resultsBlock')
+    return res == None
+
+def get_manufacturer_details(url):
+    only_man = check_page_only_manufacturer(url)
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    manufacturers = []
+    if only_man:
+        for item in soup.select('ul.dir-manu-list'):
+            manufacturer = {}
+            manufacturer['name'] = item.select_one('a.dir-manu-name').get_text(strip=True)
+            manufacturer['url'] = item.select_one('a')['href']
+            manufacturers.append(manufacturer)
+    else:
+        return []
+        # TODO: someone please implement this
+        # some suggestions:
+        # 1. Invoke function to get the manufacturer details... we need to click the `#btnShowCompanies` button
+        # 2. Some kind of nifty string parsing using BS4 Comments
+
+    print(manufacturers)
 
 def get_total_pages(url):
     """Returns a number denoting the total number of pages by analyzing the internal HTML."""
@@ -135,3 +162,6 @@ def scrape_item(url):
     except requests.RequestException as e:
         print(f"Error fetching {url}: {e}")
         return []
+
+
+get_manufacturer_details('https://www.gophotonics.com/directory/krypton-lamps')

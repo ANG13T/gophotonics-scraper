@@ -1,5 +1,10 @@
 # GO PHOTONICS SCRAPER 
 
+# MANUFACTURER INFO
+- [ ] Manufacturer Name
+- [ ] Manufacturer Website
+
+
 Check if there are product listings... if not, just show organization information
 Scraper component detects if there are products...
     > returns list of products
