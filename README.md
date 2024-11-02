@@ -4,10 +4,10 @@ CLI web scraper for Go Photonics: quick access to photonics and lab equipment da
 
 All data is scraped from [Go Photonics](https://www.gophotonics.com/)
 
-Finish:
-1, 2, 4
-
 ![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png)
+
+> Manufacturer Information / Details
+> Make a description option 
 
 ### 0x00 > Features
 - Extracts details about photonics component specifications

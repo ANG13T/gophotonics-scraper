@@ -391,7 +391,7 @@ SUBSUBSYSTEMS_URLS = [
         "url": "https://www.gophotonics.com/search/electro-optic-intensity-modulators"
     },
     {
-        "item:": "Electro-Optic Phase Modulators",
+        "item": "Electro-Optic Phase Modulators",
         "url": "https://www.gophotonics.com/search/electro-optic-phase-modulators"
     },
     {
@@ -455,7 +455,7 @@ SUBSUBSYSTEMS_URLS = [
         "url": "https://www.gophotonics.com/directory/fiber-optic-switches"
     },
     {
-        "item: ": "Fiber Optic Transceivers",
+        "item": "Fiber Optic Transceivers",
         "url": "https://www.gophotonics.com/search/fiber-optic-transceivers"
     },
     {

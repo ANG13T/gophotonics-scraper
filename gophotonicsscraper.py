@@ -20,9 +20,9 @@ import json
 console = Console()
 
 menu_items = [
-    ("1.", "SCAN SUBSYSTEM CATALOG"),
+    ("1.", "SCAN PHOTONICS CATALOG"),
     ("2.", "SCAN COMPONENT"),
-    ("3.", "VIEW SUBSYSTEMS"),
+    ("3.", "VIEW CATALOG"),
     ("4.", "DOWNLOAD"),
     ("5.", "EXIT"),
 ]
@@ -54,15 +54,23 @@ def scan_subsystem_items():
     url = get_url_from_subsystem(subtopic)
     result = scrape_site_with_pagination(url)
     data = json.loads(json.dumps(result))
-    print_styled_items(data["items"])
-    val = console.input("[bright_black]Press Enter to Continue or (S to Search Keyword)...[/bright_black]")
-
-    while val == "S" or val == "s":
-        keys = gather_all_keys(data["items"])
-        search_key = console.input("[bright_black]Enter Keyword to Search: [/bright_black]")
-        search_result = search_keyword(data["items"], search_key)
-        print_styled_items_with_keyword_highlights(search_result, search_key)
+    print(data)
+    if "items" in data:
+        print_styled_items(data["items"])
         val = console.input("[bright_black]Press Enter to Continue or (S to Search Keyword)...[/bright_black]")
+
+
+        while val == "S" or val == "s":
+            keys = gather_all_keys(data["items"])
+            search_key = console.input("[bright_black]Enter Keyword to Search: [/bright_black]")
+            search_result = search_keyword(data["items"], search_key)
+            print_styled_items_with_keyword_highlights(search_result, search_key)
+            val = console.input("[bright_black]Press Enter to Continue or (S to Search Keyword)...[/bright_black]")
+
+    else:
+        console.print("[bold red]No items found![/bold red]")
+        print_styled_items(data)
+        console.input("[bright_black]Press Enter to Continue...[/bright_black]")
 
 def scan_component():
     input = select_subsystem()

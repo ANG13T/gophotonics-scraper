@@ -12,7 +12,7 @@ from modules.config import SUBSUBSYSTEMS_URLS
 console = Console()
 
 menu_items = [
-    ("1.", "SUBSYSTEM ITEMS"),
+    ("1.", "CATALOG ITEMS"),
     ("2.", "ITEM DETAILS"),
     ("3.", "EXIT"),
 ]
@@ -182,7 +182,7 @@ def save_to_csv_item(data, filename):
 
 def display_download_prompt():
     print_line("\n 💾 DOWNLOAD OPTIONS", "bold")
-    choice = display_menu_prompt(menu_items, "bright_magenta", False)
+    choice = display_menu_prompt(menu_items, "bright_black", False)
 
     if choice == "1":
         download_subsystem()
@@ -196,7 +196,7 @@ def display_download_prompt():
 def display_download_options(data):
     print_line("\n 📁 FILE FORMAT", "bold")
 
-    choice = display_menu_prompt(download_items, "bright_magenta", False)
+    choice = display_menu_prompt(download_items, "bright_black", False)
 
     file_name = print_input("Enter file name: ", "blue")
 
@@ -212,7 +212,7 @@ def display_download_options(data):
 def display_download_options_item(data):
     print_line("\n 📁 FILE FORMAT", "bold")
 
-    choice = display_menu_prompt(download_items, "bright_magenta", False)
+    choice = display_menu_prompt(download_items, "bright_black", False)
 
     file_name = print_input("Enter file name: ", "blue")
 

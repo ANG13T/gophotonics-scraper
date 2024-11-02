@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup, Comment
 
+# TODO: fix something with this method
 def check_page_only_manufacturer(url):
     "Returns True if page only contains Manufacturer information"
     response = requests.get(url)
@@ -14,7 +15,7 @@ def get_manufacturer_details(url):
     soup = BeautifulSoup(response.content, 'html.parser')
     manufacturers = []
     if only_man:
-        for item in soup.select('ul.dir-manu-list'):
+        for item in soup.select('ul.dir-manu-list > li'):
             manufacturer = {}
             manufacturer['name'] = item.select_one('a.dir-manu-name').get_text(strip=True)
             manufacturer['url'] = item.select_one('a')['href']
@@ -25,8 +26,6 @@ def get_manufacturer_details(url):
         # some suggestions:
         # 1. Invoke function to get the manufacturer details... we need to click the `#btnShowCompanies` button
         # 2. Some kind of nifty string parsing using BS4 Comments
-
-    print(manufacturers)
 
 def get_total_pages(url):
     """Returns a number denoting the total number of pages by analyzing the internal HTML."""
@@ -63,6 +62,8 @@ def scrape_site_with_pagination(url):
     total_pages = get_total_pages(url)
     all_items = []
 
+    if total_pages == 1:
+        return {'items': [scrape_page(url)]}
 
     for page_number in range(1, total_pages + 1):
         page_url = f"{url}?page={page_number}"
@@ -79,43 +80,45 @@ def scrape_page(url):
 
         items = []
 
-        # Find all elements with the 'col-sm-8 col-md-7 col-lg-8 centerLeft centerLeft' class
-        for item in soup.find_all(class_='col-sm-8 col-md-7 col-lg-8 centerLeft'):
-            item_data = {}
+        if check_page_only_manufacturer(url) == False:
+            # Find all elements with the 'col-sm-8 col-md-7 col-lg-8 centerLeft centerLeft' class
+            for item in soup.find_all(class_='col-sm-8 col-md-7 col-lg-8 centerLeft'):
+                item_data = {}
 
-            # TITLE: h3.prod-title > a (get the text inside the title link)
-            title_tag = item.select_one('h3.prod-title > a')
-            if title_tag:
-                item_data['title'] = title_tag.get_text(strip=True)
+                # TITLE: h3.prod-title > a (get the text inside the title link)
+                title_tag = item.select_one('h3.prod-title > a')
+                if title_tag:
+                    item_data['title'] = title_tag.get_text(strip=True)
 
-                # LINK: h3.prod-title > a.href (get the href attribute of the link)
-                item_data['link'] = title_tag['href']
+                    # LINK: h3.prod-title > a.href (get the href attribute of the link)
+                    item_data['link'] = title_tag['href']
 
-            # ORGANIZATION: .moreinfo > a.cur (get the organization link's text)
-            org_tag = item.select_one('.moreinfo > a.cur')
-            if org_tag:
-                item_data['organization'] = org_tag.get_text(strip=True)
+                # ORGANIZATION: .moreinfo > a.cur (get the organization link's text)
+                org_tag = item.select_one('.moreinfo > a.cur')
+                if org_tag:
+                    item_data['organization'] = org_tag.get_text(strip=True)
 
-            # SKU: .descriptiontext > TEXT (get text inside descriptiontext class)
-            sku_tag = item.select_one('.descriptiontext')
-            if sku_tag:
-                item_data['sku'] = sku_tag.get_text(strip=True)[4:]
+                # SKU: .descriptiontext > TEXT (get text inside descriptiontext class)
+                sku_tag = item.select_one('.descriptiontext')
+                if sku_tag:
+                    item_data['sku'] = sku_tag.get_text(strip=True)[4:]
 
-            # DETAILS: .specs > .data-row > (.attribute + .value) (loop over data-row items to extract attribute-value pairs)
-            details = {}
-            spec_rows = item.select('.specs > .data-row')
-            for row in spec_rows:
-                attribute = row.select_one('.attribute')
-                value = row.select_one('.value')
-                if attribute and value:
-                    details[attribute.get_text(strip=True)] = value.get_text(strip=True)
+                # DETAILS: .specs > .data-row > (.attribute + .value) (loop over data-row items to extract attribute-value pairs)
+                details = {}
+                spec_rows = item.select('.specs > .data-row')
+                for row in spec_rows:
+                    attribute = row.select_one('.attribute')
+                    value = row.select_one('.value')
+                    if attribute and value:
+                        details[attribute.get_text(strip=True)] = value.get_text(strip=True)
 
-            if details:
-                item_data['details'] = details
+                if details:
+                    item_data['details'] = details
 
-            items.append(item_data)
-
-        return items
+                items.append(item_data)
+        else:
+            manufacturers = get_manufacturer_details(url)
+            return manufacturers
 
     except requests.RequestException as e:
         print(f"Error fetching {url}: {e}")
@@ -131,7 +134,11 @@ def scrape_item(url):
         item_type = soup.select_one('#ContentPlaceHolder1_lblNodeSingularName').get_text(strip=True)
         item_manufacturer = soup.select_one('a#hlnkManuDisplayName').get_text(strip=True)
         item_manufacturer_url = soup.select_one('a#hlnkManuDisplayName')['href']
-        item_description = soup.select_one('#ContentPlaceHolder1_lblPartCkEditor').get_text(strip=True)
+        item_description = soup.select_one('#ContentPlaceHolder1_lblPartCkEditor')
+        if item_description:
+            item_description = item_description.get_text(strip=True)
+        else:
+            item_description = "No description available"
         item_data['title'] = item_title
         item_data['type'] = item_type
         item_data['manufacturer'] = item_manufacturer
@@ -162,6 +169,3 @@ def scrape_item(url):
     except requests.RequestException as e:
         print(f"Error fetching {url}: {e}")
         return []
-
-
-get_manufacturer_details('https://www.gophotonics.com/directory/krypton-lamps')
