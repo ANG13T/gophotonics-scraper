@@ -77,7 +77,6 @@ def scrape_page(url):
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.content, 'html.parser')
-
         items = []
 
         if check_page_only_manufacturer(url) == False:
@@ -116,6 +115,7 @@ def scrape_page(url):
                     item_data['details'] = details
 
                 items.append(item_data)
+            return items
         else:
             manufacturers = get_manufacturer_details(url)
             return manufacturers

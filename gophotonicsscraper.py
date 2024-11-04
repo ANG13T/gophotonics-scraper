@@ -54,7 +54,6 @@ def scan_subsystem_items():
     url = get_url_from_subsystem(subtopic)
     result = scrape_site_with_pagination(url)
     data = json.loads(json.dumps(result))
-    print(data)
     if "items" in data:
         print_styled_items(data["items"])
         val = console.input("[bright_black]Press Enter to Continue or (S to Search Keyword)...[/bright_black]")

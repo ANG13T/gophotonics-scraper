@@ -53,6 +53,6 @@ def select_component(subsystem_index, components):
     subtopics = get_subtopics_by_index(subsystem_index)
     for i, category in enumerate(components):
         if category != None:
-            print(f"[bold steel_blue3]{i + 1}: {category}[/bold steel_blue3]")
+            print(f"[bold steel_blue3]{i + 1}: {category['title']}[/bold steel_blue3]")
     choice = console.input(f"[cyan]Please select an option (1-{(len(components))}): [/cyan]")
     return components[int(choice) - 1]

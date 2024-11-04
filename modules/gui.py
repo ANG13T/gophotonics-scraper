@@ -26,7 +26,6 @@ def print_styled_items(items):
     for item in items:
         print_line("=" * 70, "bold steel_blue3")
 
-        print(items)
         for key, value in item.items():
             if key == "details":
                 for k, v in value.items():
