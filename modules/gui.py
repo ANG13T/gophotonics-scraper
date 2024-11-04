@@ -23,6 +23,9 @@ def print_input(contents, style):
 
 def print_styled_items(items):
     print("\n")
+    if items == None:
+        console.print("[bold red]No items found![/bold red]")
+        return
     for item in items:
         print_line("=" * 70, "bold steel_blue3")
 
