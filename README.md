@@ -4,7 +4,7 @@ CLI web scraper for Go Photonics: quick access to photonics and lab equipment da
 
 All data is scraped from [Go Photonics](https://www.gophotonics.com/)
 
-![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png)
+![https://github.com/ANG13T/satnow-scraper/blob/main/assets/PHOTONICS_1.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/PHOTONICS_1.png)
 
 ### 0x00 > Features
 - Extracts details about photonics component specifications
@@ -22,13 +22,13 @@ python3 gophotonicsscraper.py
 
 ### 0x02 > Previews
 
-![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_1.png)
+![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/PHOTONICS_1.png)
 
-![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_2.png)
+![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/PHOTONICS_2.png)
 
-![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png)
+![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/PHOTONICS_3.png)
 
-![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_4.png)
+![https://github.com/ANG13T/satnow-scraper/blob/main/assets/SNS_3.png](https://github.com/ANG13T/satnow-scraper/blob/main/assets/PHOTONICS_4.png)
 
 ### 0x03 > Contributing 
 Go Photonics Scraper is open to any contributions. Please fork the repository and make a pull request with the features or fixes you want to implement.
